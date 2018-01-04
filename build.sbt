@@ -3,19 +3,19 @@ import com.typesafe.sbt.osgi.OsgiKeys
 
 addCommandAlias("release", ";+clean ;+package ;+publishSigned ;sonatypeReleaseAll")
 
-lazy val akkaVersion = "2.4.12"
+lazy val akkaVersion = "2.5.14"
 
-lazy val `akka-kryo-serialization` = project
-  .in(file("."))
-  .settings(sharedSettings)
-  .enablePlugins(SbtOsgi)
-  .settings(libraryDependencies += "com.typesafe.akka" %% "akka-remote" % akkaVersion)
-  .settings(libraryDependencies += "com.esotericsoftware" % "kryo" % "4.0.0")
-  .settings(libraryDependencies += "net.jpountz.lz4" % "lz4" % "1.3.0")
-  .settings(libraryDependencies += "commons-io" % "commons-io" % "2.4" % "test")
-  .settings(libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.0" % "test")
-  .settings(libraryDependencies += "com.typesafe.akka" %% "akka-persistence" % akkaVersion % "test")
-  .settings(libraryDependencies += "com.typesafe.akka" %% "akka-testkit" % akkaVersion % "test")
+sharedSettings
+enablePlugins(SbtOsgi)
+libraryDependencies += Seq(
+  "com.typesafe.akka"    %% "akka-remote"         % akkaVersion,
+  "com.esotericsoftware" %  "kryo"                % "4.0.2",
+  "org.lz4"              %  "lz4"                 % "1.4.0",
+  "commons-io"           %  "commons-io"          % "2.5"       % "test",
+  "org.scalatest"        %% "scalatest"           % "3.0.5"     % "test",
+  "com.typesafe.akka"    %% "akka-persistence"    % akkaVersion % "test",
+  "com.typesafe.akka"    %% "akka-testkit"        % akkaVersion % "test"
+)
 
 lazy val warnUnusedImport = Seq(
   scalacOptions ++= {
