@@ -1,0 +1,32 @@
+dist: trusty
+sudo: false
+language: scala
+jdk: oraclejdk8
+scala: &scalaVersions
+  - 2.11.12
+  - 2.12.6
+
+script:
+  - sbt ++$TRAVIS_SCALA_VERSION test
+
+before_cache:
+  # Cleanup the cached directories to avoid unnecessary cache updates
+  - find $HOME/.ivy2/cache -name "ivydata-*.properties" -print -delete
+  - find $HOME/.sbt        -name "*.lock"               -print -delete
+
+cache:
+  directories:
+    - $HOME/.ivy2/cache
+    - $HOME/.sbt
+
+jobs:
+  include:
+    - &publish
+      stage: publish
+      script: sbt ++$TRAVIS_SCALA_VERSION publish
+      scala: 2.11.12
+      if: >-
+        (branch = master OR tag IS present)
+        AND repo = Cobliteam/akka-kryo-serialization
+    - <<: *publish
+      scala: 2.12.6
