@@ -116,7 +116,7 @@ incOptions := incOptions.value.withLogRecompileOnMacro(false)
 publishArtifact in Test := false
 pomIncludeRepository := { _ => false } // removes optional dependencies
 
-licenses := Seq("APL2" -> url("http://www.apache.org/licenses/LICENSE-2.0.txt"))
+licenses := Seq("Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0.txt"))
 
 scmInfo := Some(
   ScmInfo(
@@ -156,27 +156,16 @@ lazy val warnUnusedImport = Seq(
 )
 
 //------------- For Release
+
+bintrayOrganization := Some("cobli")
+bintrayRepository := "maven"
+
 enablePlugins(GitVersioning)
 
-addCommandAlias("release", ";+clean ;+package ;+publishSigned ;sonatypeReleaseAll")
-
-/* The BaseVersion setting represents the in-development (upcoming) version,
- * as an alternative to SNAPSHOTS.
- */
-git.baseVersion := "0.5.2"
-
-val ReleaseTag = """^v(\d+\.\d+(?:\.\d+(?:[-.]\w+)?)?)$""".r
+val ReleaseTag = """^v(\d+(?:\.\d+)+(?:-\d+)?(?:[-.]\w+)?)$""".r
 git.gitTagToVersionNumber := {
   case ReleaseTag(v) => Some(v)
   case _             => None
 }
 
-git.formattedShaVersion := {
-  val suffix = git.makeUncommittedSignifierSuffix(git.gitUncommittedChanges.value, git.uncommittedSignifier.value)
-
-  git.gitHeadCommit.value map {
-    _.substring(0, 7)
-  } map { sha =>
-    git.baseVersion.value + "-" + sha + suffix
-  }
-}
+git.useGitDescribe := true
