@@ -169,3 +169,16 @@ git.gitTagToVersionNumber := {
 }
 
 git.useGitDescribe := true
+
+// Trust Travis CI env. vars for the tag name, otherwise we can get repeated versions
+// when building a commit and a tag created for it in a short time (the tag will already exist
+// when the branch build starts)
+git.gitCurrentTags := {
+  sys.env.get("TRAVIS") match {
+    case Some("true") =>
+      val travisTag = sys.env.get("TRAVIS_TAG").filter(_.nonEmpty)
+      travisTag.toSeq
+    case _ =>
+      git.gitCurrentTags.value
+  }
+}
