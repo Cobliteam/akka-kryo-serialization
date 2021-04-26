@@ -1,5 +1,10 @@
-akka-kryo-serialization - kryo-based serializers for Scala and Akka
-=====================================================================
+# akka-kryo-serialization - kryo-based serializers for Scala and Akka
+
+**This project has been archived**.  The reason being that the project that
+used this lib is retired and bintray, the repo where it was published,
+is also going into retirement.  So, having no reason to be maintained and
+having to be migrated in order to stay available makes it a waste of time to
+keep this project active.
 
 This library provides custom Kryo-based serializers for Scala and Akka. It can be
 used for more efficient akka actor's remoting.
@@ -7,45 +12,41 @@ used for more efficient akka actor's remoting.
 It can also be used for a general purpose and very efficient Kryo-based serialization
 of such Scala types like Option, Tuple, Enumeration and most of Scala's collection types.
 
-Features
---------
+## Features
 
-* It is more efficient than Java serialization - both in size and speed
-* Does not require any additional build steps like compiling proto files, when using protobuf serialization
-* Almost any Scala and Java class can be serialized using it without any additional configuration or code changes
-* Efficient serialization of such Scala types like Option, Tuple, Enumeration, most of Scala's collection types
-* Greatly improves performance of Akka's remoting
-* Supports transparent AES encryption and different modes of compression
-* Apache 2.0 license
+- It is more efficient than Java serialization - both in size and speed
+- Does not require any additional build steps like compiling proto files, when using protobuf serialization
+- Almost any Scala and Java class can be serialized using it without any additional configuration or code changes
+- Efficient serialization of such Scala types like Option, Tuple, Enumeration, most of Scala's collection types
+- Greatly improves performance of Akka's remoting
+- Supports transparent AES encryption and different modes of compression
+- Apache 2.0 license
 
-
-How to use this library in your project
----------------------------------------
+## How to use this library in your project
 
 We provide several versions of the libraray:
 
-* v0.5.1 is build against Akka-2.4 and Kryo-4.0 and is available for Scala-2.11 and Scala-2.12
-* v0.4.2 is build against Akka-2.4 and Kryo-3.0 and is available for Scala-2.11
-* v0.3.3 is build against Akka-2.3 and in available for Scala-2.10 and 2.11
+- v0.5.1 is build against Akka-2.4 and Kryo-4.0 and is available for Scala-2.11 and Scala-2.12
+- v0.4.2 is build against Akka-2.4 and Kryo-3.0 and is available for Scala-2.11
+- v0.3.3 is build against Akka-2.3 and in available for Scala-2.10 and 2.11
 
 To use this serializer, you need to do two things:
 
-* Include a dependency on this library into your project:
+- Include a dependency on this library into your project:
 
-    `libraryDependencies += "com.github.romix.akka" %% "akka-kryo-serialization" % "0.5.1"`
+  `libraryDependencies += "com.github.romix.akka" %% "akka-kryo-serialization" % "0.5.1"`
 
   or if you need Kryo-3.0 compatibility:
 
-    `libraryDependencies += "com.github.romix.akka" %% "akka-kryo-serialization" % "0.4.2"`
+  `libraryDependencies += "com.github.romix.akka" %% "akka-kryo-serialization" % "0.4.2"`
 
   or if you are building for Akka-2.3 or Scala-2.10:
 
-    `libraryDependencies += "com.github.romix.akka" %% "akka-kryo-serialization" % "0.3.3"`
+  `libraryDependencies += "com.github.romix.akka" %% "akka-kryo-serialization" % "0.3.3"`
 
-* Add some new elements to your Akka configuration file, e.g. `application.conf`
+- Add some new elements to your Akka configuration file, e.g. `application.conf`
 
-Which Maven repository contains this library?
----------------------------------------------
+## Which Maven repository contains this library?
 
 You can find the JARs on Sonatype Maven repository.
 
@@ -98,32 +99,30 @@ or
 
     "com.github.romix.akka" %% "akka-kryo-serialization" % "0.3.3"
 
+## How do I build this library on my own?
 
-How do I build this library on my own?
---------------------------------------------
 If you wish to build the library on your own, you need to check out the project from Github and do
 
     `sbt compile publish-local`
 
 If you wish to use it within an OSGi environment, you can add OSGi headers to the build by executing:
-    `sbt osgi-bundle publish-local`
+`sbt osgi-bundle publish-local`
 
 Note that the OSGi build uses the sbt-osgi plugin, which may not be available from Maven Central or the
 Typesafe repo, so it may require a local build as well. sbt-osgi can be found at
 https://github.com/sbt/sbt-osgi.
 
-Configuration of akka-kryo-serialization
-----------------------------------------------
+## Configuration of akka-kryo-serialization
 
 The following options are available for configuring this serializer:
 
-* You need to add a following line to the list of your Akka extensions:
+- You need to add a following line to the list of your Akka extensions:
 
 ```
 extensions = ["com.romix.akka.serialization.kryo.KryoSerializationExtension$"]
 ```
 
-* You need to add a new `kryo` section to the akka.actor part of configuration
+- You need to add a new `kryo` section to the akka.actor part of configuration
 
         kryo  {
             # Possibles values for type are: graph or nograph
@@ -273,8 +272,7 @@ extensions = ["com.romix.akka.serialization.kryo.KryoSerializationExtension$"]
             ]
         }
 
-
-* You should declare in the `akka.actor.serializers` section a new kind of serializer:
+- You should declare in the `akka.actor.serializers` section a new kind of serializer:
 
 ```
 serializers {
@@ -284,19 +282,18 @@ serializers {
 }
 ```
 
-* As usual, you should declare in the Akka `serialization-bindings` section which
-classes should use kryo serialization. One thing to keep in mind is that classes that
-you register in this section are supposed to be *TOP-LEVEL* classes that you wish to
-serialize. I.e. this is a class of object that you send over the wire. It should not
-be a class that is used internally by a top-level class. The reason for it: Akka sees
-only an object of a top-level class to be sent. It picks a matching serializer for
-this top-level class, e.g. a default Java serializer, and then it serializes the
-whole object graph with this object as a root using this Java serializer.
+- As usual, you should declare in the Akka `serialization-bindings` section which
+  classes should use kryo serialization. One thing to keep in mind is that classes that
+  you register in this section are supposed to be _TOP-LEVEL_ classes that you wish to
+  serialize. I.e. this is a class of object that you send over the wire. It should not
+  be a class that is used internally by a top-level class. The reason for it: Akka sees
+  only an object of a top-level class to be sent. It picks a matching serializer for
+  this top-level class, e.g. a default Java serializer, and then it serializes the
+  whole object graph with this object as a root using this Java serializer.
 
-Kryo queue builder examples:
-----------------------------
+## Kryo queue builder examples:
 
-* Scala bounded queue builder with a capacity of 32:
+- Scala bounded queue builder with a capacity of 32:
 
         package a.b.c
 
@@ -311,7 +308,7 @@ Kryo queue builder examples:
           }
         }
 
-* Java bounded queue builder with a capacity of 32:
+- Java bounded queue builder with a capacity of 32:
 
         package a.b.c;
 
@@ -328,9 +325,7 @@ Kryo queue builder examples:
           }
         }
 
-
-How do you create mappings or classes sections with proper content?
--------------------------------------------------------------------
+## How do you create mappings or classes sections with proper content?
 
 One of the easiest ways to understand which classes you need to register in those
 sections is to leave both sections first empty and then set
@@ -365,9 +360,7 @@ If you use this library as an alternative serialization method when sending mess
 between actors, it is extremely important that the order of class registration and
 the assigned class IDs are the same for senders and for receivers!
 
-
-How to create a custom initializer for Kryo
--------------------------------------------
+## How to create a custom initializer for Kryo
 
 Sometimes you need to customize Kryo beyond what is possible by means of the
 configuration parameters in the config file. Typically, you may want to register very
@@ -398,8 +391,7 @@ like this:
     }
 ```
 
-How to use a custom key for aes
--------------------------------
+## How to use a custom key for aes
 
 Sometimes you need to pass a custom aes key, depending on the context you are in,
 instead of having a static key. For example, you might have the key in a data
@@ -430,20 +422,19 @@ An example of such a custom aes-key supplier class could be something like this:
     }
 ```
 
-Resolving Subclasses
---------------------
+## Resolving Subclasses
 
 If you are using `idstrategy="explicit"`, you may find that some of the standard Scala and
 Akka types are a bit hard to register properly. This is because these types are exposed in
 the API as simple traits or abstract classes, but they are actually implemented as many
 specialized subclasses that are used as necessary. Examples include:
 
-* scala.collection.immutable.Map
-* scala.collection.immutable.Set
-* akka.actor.ActorRef
-* akka.actor.ActorPath
+- scala.collection.immutable.Map
+- scala.collection.immutable.Set
+- akka.actor.ActorRef
+- akka.actor.ActorPath
 
-The problem is that Kryo thinks in terms of the *exact* class being serialized, but you are
+The problem is that Kryo thinks in terms of the _exact_ class being serialized, but you are
 rarely working with the actual implementation class -- the application code only cares about
 the more abstract trait. The implementation class often isn't obvious, and is sometimes
 private to the library it comes from. This isn't an issue for idstrategies that add registrations
@@ -476,8 +467,7 @@ register most of your classes explicitly, as usual. But it is a helpful way to t
 of some class hierarchies, when that complexity can be treated as an implementation detail and all
 of the subclasses can be serialized and deserialized identically.
 
-Usage as a general purpose Scala serialization library
-------------------------------------------------------
+## Usage as a general purpose Scala serialization library
 
 Simply add this library to your classpath. It does not have any external
 dependencies besides Kryo. All serializers for Scala classes can be found
