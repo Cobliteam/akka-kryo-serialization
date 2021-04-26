@@ -1,7 +1,7 @@
 # akka-kryo-serialization - kryo-based serializers for Scala and Akka
 
 **This project has been archived**.  The reason being that the project that
-used this lib is also retired and bintray, the repo where it was published,
+used this lib is retired and bintray, the repo where it was published,
 is also going into retirement.  So, having no reason to be maintained and
 having to be migrated in order to stay available makes it a waste of time to
 keep this project active.
